@@ -53,6 +53,7 @@ public class GoodBrain : MonoBehaviour, IBrain
                 StartCoroutine(GoToServer());
                 yield break;
             } else if(_tapped) {
+                _queue.RemoveClientInQueue(_client);
                 StartCoroutine(GoToBase());
                 yield break;
             }
@@ -70,6 +71,7 @@ public class GoodBrain : MonoBehaviour, IBrain
         GetComponent<Legs>().GoTo(_mutex.transform.position);
         while(true) {
             if(_destinationReached) {
+                
                 StartCoroutine(WaitForServed());
                 yield break;
             } else if(_tapped) {

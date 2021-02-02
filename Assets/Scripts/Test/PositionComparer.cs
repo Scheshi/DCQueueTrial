@@ -17,7 +17,7 @@ using UnityEngine;
             return
                 (client1.position - _serverPosition).sqrMagnitude <
                 (client2.position - _serverPosition).sqrMagnitude
-                    ? 1
-                    : -1;
+                    ? -1
+                    : 1;
         }
     }
