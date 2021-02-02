@@ -146,7 +146,6 @@ public class GoodBrain : MonoBehaviour, IBrain
 
     public void OnTapped(){
         _tapped = true;
-        Debug.Log("Нажат!");
     }
     public void OnServed(){
         _served = true;

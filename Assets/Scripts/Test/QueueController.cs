@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,16 +10,19 @@ public class QueueController : MonoBehaviour
     private void Start()
     {
         //_mutex = FindObjectOfType<Mutex>();
-        _queuePosition = GetComponentsInChildren<Transform>();
-        if (_queuePosition == null)
+        var markers = transform.GetComponentsInChildren<QueueMarker>();
+        _queuePosition = new Transform[markers.Length];
+        for (var i = 0; i < markers.Length; i++)
         {
-            throw new ArgumentException("Не создается массив позиций очереди");
+            _queuePosition[i] = markers[i].transform;
         }
+        
         var serverPosition = FindObjectOfType<Server>().transform.position;
 
         var pc = new PositionComparer(serverPosition);
 
         Array.Sort(_queuePosition, pc);
+        
     }
 
     public void AddClientInQueue(Client client)
