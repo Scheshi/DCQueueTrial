@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -38,8 +39,10 @@ public class Client : MonoBehaviour, IPointerDownHandler
     }
     public void Start()
     {
-        _brain = GetComponent<IBrain>();
-        _orderTimer.gameObject.SetActive(false);
+        TryGetComponent(out IBrain brain);
+        if (brain != null) _brain = brain;
+        if(_orderTimer)
+            _orderTimer.gameObject.SetActive(false);
     }
     
     #endregion
@@ -89,4 +92,21 @@ public class Client : MonoBehaviour, IPointerDownHandler
     }
     
     #endregion
+
+    public static Client Create(ClientStruct str, Transform home, IBrain brain, SpriteMask spriteMask)
+
+    {
+        var go = new GameObject("client");
+        var client = go.AddComponent<Client>();
+        client._orderTimer = spriteMask;
+        client._home = home;
+        client._patience = str.Patience;
+        client._served = str.Served;
+        client._speed = str.Speed;
+        client._brain = brain;
+        client.transform.position = home.position;
+        client._orderTimer.gameObject.SetActive(false);
+        return client;
+
+    }
 }

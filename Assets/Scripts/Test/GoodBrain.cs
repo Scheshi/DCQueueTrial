@@ -12,7 +12,15 @@ public class GoodBrain : MonoBehaviour, IBrain
     private QueueController _queue;
     private Client _client;
     private Legs _clientLegs;
-    
+
+
+    /*public GoodBrain(Mutex mutex, QueueController queue, Client client, Legs legs)
+    {
+        _mutex = mutex;
+        _queue = queue;
+        _client = client;
+        _clientLegs = legs;
+    }*/
     
     void Start()
     {
