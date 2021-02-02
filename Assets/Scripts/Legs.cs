@@ -5,19 +5,21 @@ using UnityEngine.AI;
 
 public class Legs : MonoBehaviour
 {
-    NavMeshAgent agent;
-    Animator animator;
-    Coroutine walk = null;
+    private NavMeshAgent agent;
+    private Animator animator;
+    private Coroutine walk = null;
+    private Client _client;
     public void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        _client = GetComponent<Client>();
     }
     public void GoTo(Vector3 position) {
         Stop();
         agent.destination = position;
         agent.updateRotation = false;
-        agent.speed = GetComponent<Client>()?.speed ?? agent.speed;
+        agent.speed = _client?.Speed ?? agent.speed;
         walk = StartCoroutine(WalkRoutine());
     }
 

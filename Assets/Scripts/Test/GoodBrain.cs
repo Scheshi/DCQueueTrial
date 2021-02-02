@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GoodBrain : MonoBehaviour, IBrain
@@ -12,6 +11,7 @@ public class GoodBrain : MonoBehaviour, IBrain
     private Mutex _mutex;
     private QueueController _queue;
     private Client _client;
+    private Legs _clientLegs;
     
     
     void Start()
@@ -19,6 +19,7 @@ public class GoodBrain : MonoBehaviour, IBrain
         _mutex = FindObjectOfType<Mutex>();
         _queue = FindObjectOfType<QueueController>();
         _client = GetComponent<Client>();
+        _clientLegs = _client.GetComponent<Legs>();
         StartCoroutine(Idle());
     }
 
@@ -68,7 +69,7 @@ public class GoodBrain : MonoBehaviour, IBrain
         _expired = false;
         _served = false;
         _destinationReached = false;
-        GetComponent<Legs>().GoTo(_mutex.transform.position);
+        _clientLegs.GoTo(_mutex.transform.position);
         while(true) {
             if(_destinationReached) {
                 
@@ -88,9 +89,9 @@ public class GoodBrain : MonoBehaviour, IBrain
         _expired = false;
         _served = false;
         _destinationReached = false;
-        GetComponent<Client>().OrderStuff();
+        _client.OrderStuff();
         Server server = GameObject.FindObjectOfType<Server>();
-        server.currentClient = GetComponent<Client>();
+        server.currentClient = _client;
         while(true) {
             if(_served) {
                 StartCoroutine(PlayEmote());
@@ -102,7 +103,7 @@ public class GoodBrain : MonoBehaviour, IBrain
                 server.currentClient = null;
                 yield break;
             } else if(_tapped) {
-                GetComponent<Client>().ExpireNow();
+                _client.ExpireNow();
             }
             yield return null;
         }
@@ -123,13 +124,13 @@ public class GoodBrain : MonoBehaviour, IBrain
         _expired = false;
         _served = false;
         _destinationReached = false;
-        GetComponent<Legs>().GoTo(GetComponent<Client>().home.transform.position);
+        _clientLegs.GoTo(_client.HomePosition);
         while(true) {
             if(_destinationReached) {
                 StartCoroutine(Idle());
                 yield break;
             } else if(_tapped) {
-                GetComponent<Legs>().Stop();
+                _clientLegs.Stop();
                 StartCoroutine(GoToWait());
                 yield break;
             }
@@ -140,9 +141,7 @@ public class GoodBrain : MonoBehaviour, IBrain
     private void GoToQueue()
     {
         _queue.AddClientInQueue(_client); 
-        GetComponent<Legs>().GoTo(_queue.PositionMath(_client));
-            //var toPosition = _queue.PositionMath(_client);
-            //_client.GetComponent<Legs>().GoTo(toPosition);
+        _clientLegs.GoTo(_queue.PositionMath(_client));
         StartCoroutine(GoToWait());
     }
 
