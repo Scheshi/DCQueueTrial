@@ -19,6 +19,7 @@ public class GoodBrain : MonoBehaviour, IBrain
         _mutex = FindObjectOfType<Mutex>();
         _queue = FindObjectOfType<QueueController>();
         _client = GetComponent<Client>();
+        StartCoroutine(Idle());
     }
 
     IEnumerator Idle()
@@ -27,7 +28,6 @@ public class GoodBrain : MonoBehaviour, IBrain
         _served = false;
         _expired = false;
         _destinationReached = false;
-        _emotePlayed = false;
 
         while (!_tapped)
         {
@@ -40,6 +40,10 @@ public class GoodBrain : MonoBehaviour, IBrain
 
     IEnumerator GoToWait()
     {
+        _tapped = false;
+        _expired = false;
+        _served = false;
+        _destinationReached = false;
         while (true)
         {
             IEnumerator mutexLock = _mutex.Lock(this);
@@ -133,7 +137,8 @@ public class GoodBrain : MonoBehaviour, IBrain
 
     private void GoToQueue()
     {
-        _queue.AddClientInQueue(_client);
+        _queue.AddClientInQueue(_client); 
+        GetComponent<Legs>().GoTo(_queue.PositionMath(_client));
             //var toPosition = _queue.PositionMath(_client);
             //_client.GetComponent<Legs>().GoTo(toPosition);
         StartCoroutine(GoToWait());
@@ -141,6 +146,7 @@ public class GoodBrain : MonoBehaviour, IBrain
 
     public void OnTapped(){
         _tapped = true;
+        Debug.Log("Нажат!");
     }
     public void OnServed(){
         _served = true;

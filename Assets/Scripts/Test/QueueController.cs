@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class QueueController : MonoBehaviour
 {
-    [SerializeField]private readonly List<Client> ClientQueue = new List<Client>();
-    private Transform[] _queuePosition;
-    private Mutex _mutex;
+    public List<Client> ClientQueue = new List<Client>();
+    public Transform[] _queuePosition;
 
     private void Start()
     {
-        _mutex = FindObjectOfType<Mutex>();
+        //_mutex = FindObjectOfType<Mutex>();
         _queuePosition = GetComponentsInChildren<Transform>();
+        if (_queuePosition == null)
+        {
+            throw new ArgumentException("Не создается массив позиций очереди");
+        }
         var serverPosition = FindObjectOfType<Server>().transform.position;
 
         var pc = new PositionComparer(serverPosition);
@@ -23,7 +26,6 @@ public class QueueController : MonoBehaviour
     public void AddClientInQueue(Client client)
     {
         ClientQueue.Add(client);
-        client.GetComponent<Legs>().GoTo(PositionMath(client));
     }
 
     public void RemoveClientInQueue(Client client)
