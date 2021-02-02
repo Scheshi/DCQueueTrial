@@ -49,5 +49,13 @@ namespace Assets.Scripts.Test
             gameObject.AddOrGetComponent<Animator>().runtimeAnimatorController = controller;
             return gameObject;
         }
+
+        public static GameObject SetBoxCollider2D(this GameObject gameObject, Vector2 offset, Vector2 size)
+        {
+            var collider = gameObject.AddOrGetComponent<BoxCollider2D>();
+            collider.offset = offset;
+            collider.size = size;
+            return gameObject;
+        }
     }
 }

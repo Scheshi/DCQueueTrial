@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ClientData2
   m_EditorClassIdentifier: 
   ClientStruct:
-    Patience: 0
-    Speed: 0
+    Patience: 10
+    Speed: 3
     Served: 0
-  Color: {r: 0, g: 0, b: 0, a: 0}
-  HomeData: {fileID: 0}
+  Color: {r: 0.41037738, g: 1, b: 0.43360156, a: 1}
+  HomeData: {fileID: 11400000, guid: 2e0e906d08c2ac449bc8fefc4f4091c3, type: 2}

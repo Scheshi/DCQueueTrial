@@ -24,7 +24,8 @@ public class Client : MonoBehaviour, IPointerDownHandler
 
 
     #region Properties
-    
+
+    public IBrain Brain => _brain;
     public Vector3 HomePosition => _home.position;
     public float Speed => _speed;
     
@@ -90,10 +91,15 @@ public class Client : MonoBehaviour, IPointerDownHandler
     public void ExpireNow() {
         _timer = 0;
     }
+
+    public void SetBrain(IBrain brain)
+    {
+        _brain = brain;
+    }
     
     #endregion
 
-    public static Client Create(ClientStruct str, Transform home, IBrain brain, SpriteMask spriteMask)
+    public static Client Create(ClientStruct str, Transform home, SpriteMask spriteMask)
 
     {
         var go = new GameObject("client");
@@ -102,8 +108,7 @@ public class Client : MonoBehaviour, IPointerDownHandler
         client._home = home;
         client._patience = str.Patience;
         client._served = str.Served;
-        client._speed = str.Speed;
-        client._brain = brain;
+        client._speed = str.Speed;      
         client.transform.position = home.position;
         client._orderTimer.gameObject.SetActive(false);
         return client;

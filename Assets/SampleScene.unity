@@ -195,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clientDatas:
   - {fileID: 11400000, guid: 995c13ab325248d428f6c7591482f240, type: 2}
+  - {fileID: 11400000, guid: d435b7a1c2171b843b03c5437ed4bf47, type: 2}
 --- !u!4 &117018692
 Transform:
   m_ObjectHideFlags: 0
@@ -3478,7 +3479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &561408813
 Transform:
   m_ObjectHideFlags: 0

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6440bf101d7ee8e4ca3f14bb60daa08d, type: 3}
   m_Name: HomeData2
   m_EditorClassIdentifier: 
-  Position: {x: 0, y: 0, z: 0}
+  Position: {x: -7.3, y: -1.06, z: -2.33}

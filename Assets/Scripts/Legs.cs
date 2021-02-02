@@ -32,7 +32,7 @@ public class Legs : MonoBehaviour
             yield return null;
         }
         animator.SetFloat("Speed", 0f);
-        GetComponent<IBrain>().OnDestinationReached();
+        _client.Brain.OnDestinationReached();
     }
 
     public void Stop()

@@ -6,6 +6,6 @@ public class EmoteState : StateMachineBehaviour
 {
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.GetComponent<IBrain>().OnEmotePlayed();
+        animator.GetComponent<Client>().Brain.OnEmotePlayed();
     }
 }

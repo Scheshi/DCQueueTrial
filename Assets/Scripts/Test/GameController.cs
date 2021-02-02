@@ -16,11 +16,15 @@ public class GameController : MonoBehaviour
         {
             var pack = new GameObject("ClientPack" + i);
             var home = homeFabric.Contruct(_clientDatas[i].HomeData.Position, _clientDatas[i].Color);
-            home.parent = pack.transform;
+            var homeTransform = home.transform;
+            homeTransform.parent = pack.transform;
             var client = clientFabric.Construct(
                 _clientDatas[i].ClientStruct,
-                home,
-                _clientDatas[i].Color);
+                homeTransform,
+                _clientDatas[i].Color,
+                FindObjectOfType<QueueController>(),
+                FindObjectOfType<Mutex>());
+            home.InjectClient(client);
             client.transform.parent = pack.transform;
         }
     }
