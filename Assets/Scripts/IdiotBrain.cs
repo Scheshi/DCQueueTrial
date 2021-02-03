@@ -86,21 +86,21 @@ public class IdiotBrain : MonoBehaviour, IBrain
         expired = false;
         served = false;
         destinationReached = false;
-        GetComponent<Client>().OrderStuff();
+        GetComponent<ClientView>().OrderStuff();
         Server server = GameObject.FindObjectOfType<Server>();
-        server.currentClient = GetComponent<Client>();
+        server.CurrentClientView = GetComponent<ClientView>();
         while(true) {
             if(served) {
                 StartCoroutine(PlayEmote());
-                server.currentClient = null;
+                server.CurrentClientView = null;
                 yield break;
             } else if(expired) {
                 StartCoroutine(GoToBase());
                 mutex.Unlock(this);
-                server.currentClient = null;
+                server.CurrentClientView = null;
                 yield break;
             } else if(tapped) {
-                GetComponent<Client>().ExpireNow();
+                GetComponent<ClientView>().ExpireNow();
             }
             yield return null;
         }
@@ -121,7 +121,7 @@ public class IdiotBrain : MonoBehaviour, IBrain
         expired = false;
         served = false;
         destinationReached = false;
-        GetComponent<Legs>().GoTo(GetComponent<Client>().home.transform.position);
+        GetComponent<Legs>().GoTo(GetComponent<ClientView>().home.transform.position);
         while(true) {
             if(destinationReached) {
                 StartCoroutine(Idle());

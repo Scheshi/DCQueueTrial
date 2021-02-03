@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QueueController : MonoBehaviour
 {
-    private readonly List<Client> _clientQueue = new List<Client>();
+    private readonly List<IClientView> _clientQueue = new List<IClientView>();
     private Transform[] _queuePosition;
 
     private void Start()
@@ -25,30 +25,31 @@ public class QueueController : MonoBehaviour
         
     }
 
-    public void AddClientInQueue(Client client)
+    public void AddClientInQueue(IClientView clientView)
     {
-        _clientQueue.Add(client);
+        _clientQueue.Add(clientView);
     }
 
-    public void RemoveClientInQueue(Client client)
+    public void RemoveClientInQueue(IClientView clientView)
     {
-        _clientQueue.Remove(client);
+        _clientQueue.Remove(clientView);
         foreach (var item in _clientQueue)
         {
-            item.GetComponent<Legs>().GoTo(PositionMath(item));
+            if(item.Brain is ILegs)
+                (item.Brain as ILegs).GoTo(PositionMath(item));
         }
     }
 
-    public int IndexOfClient(Client client)
+    public int IndexOfClient(IClientView clientView)
     {
-        return _clientQueue.IndexOf(client);
+        return _clientQueue.IndexOf(clientView);
     }
     
-    public Vector3 PositionMath(Client client)
+    public Vector3 PositionMath(IClientView clientView)
     {
-        if (_clientQueue.Contains(client))
+        if (_clientQueue.Contains(clientView))
         {
-            var optionClient = _clientQueue.IndexOf(client);
+            var optionClient = _clientQueue.IndexOf(clientView);
             return _queuePosition[optionClient].position;
         }
         else throw new NullReferenceException("Клиента нет в очереди");

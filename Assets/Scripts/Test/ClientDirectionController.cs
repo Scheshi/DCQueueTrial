@@ -1,31 +1,37 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 
-    public class ClientDirectionController : IBrain
+    public class ClientDirectionController : IBrain, ILegs
     {
         //Потому что строки - раковая опухоль шарпов
         private const string HAPPY_EMOTY = "Happy";
         
         private Mutex _mutex;
         private QueueController _queue;
-        private Client _client;
-        private Legs _clientLegs;
+        private IClientController _clientController;
+        private IClientView _clientView;
+        private ILegs _clientLegs;
         private Animator _animator;
+        private MonoBehaviour _monoParser;
         
         private bool _tapped;
         private bool _served;
         private bool _expired;
         private bool _destinationReached;
         private bool _emotePlayed;
-        public ClientDirectionController(Mutex mutex, QueueController queue, Client client, Legs legs, Animator animator)
+        public ClientDirectionController(Mutex mutex, QueueController queue, IClientView clientView,
+            ILegs legs, Animator animator, IClientController controller, MonoBehaviour monoBehaviour)
         {
             _mutex = mutex;
             _queue = queue;
-            _client = client;
+            _clientController = controller;
+            _clientView = clientView;
+            _monoParser = monoBehaviour;
             _clientLegs = legs;
             _animator = animator;
-            _client.StartCoroutine(Idle());
+            _monoParser.StartCoroutine(Idle());
         }
         
 
@@ -35,12 +41,11 @@ using UnityEngine;
         _served = false;
         _expired = false;
         _destinationReached = false;
-
         while (!_tapped)
         {
             yield return null;
         }
-
+        
         GoToQueue();
 
     }
@@ -53,15 +58,15 @@ using UnityEngine;
         _destinationReached = false;
         while (true)
         {
-            IEnumerator mutexLock = _mutex.Lock(_client);
-            if (_queue.IndexOfClient(_client) == 0 && !mutexLock.MoveNext())
+            IEnumerator mutexLock = _mutex.Lock(_monoParser);
+            if (_queue.IndexOfClient(_clientView) == 0 && !mutexLock.MoveNext())
             {
-                _queue.RemoveClientInQueue(_client);
-                _client.StartCoroutine(GoToServer());
+                _queue.RemoveClientInQueue(_clientView);
+                _monoParser.StartCoroutine(GoToServer());
                 yield break;
             } else if(_tapped) {
-                _queue.RemoveClientInQueue(_client);
-                _client.StartCoroutine(GoToBase());
+                _queue.RemoveClientInQueue(_clientView);
+                _monoParser.StartCoroutine(GoToBase());
                 yield break;
             }
             yield return null;
@@ -79,11 +84,11 @@ using UnityEngine;
         while(true) {
             if(_destinationReached) {
                 
-                _client.StartCoroutine(WaitForServed());
+                _monoParser.StartCoroutine(WaitForServed());
                 yield break;
             } else if(_tapped) {
-                _client.StartCoroutine(GoToBase());
-                _mutex.Unlock(_client);
+                _monoParser.StartCoroutine(GoToBase());
+                _mutex.Unlock(_monoParser);
                 yield break;
             }
             yield return null;
@@ -95,21 +100,21 @@ using UnityEngine;
         _expired = false;
         _served = false;
         _destinationReached = false;
-        _client.OrderStuff();
+        _clientController.OrderStuff();
         Server server = GameObject.FindObjectOfType<Server>();
-        server.currentClient = _client;
+        server.CurrentClientView = _clientView;
         while(true) {
             if(_served) {
-                _client.StartCoroutine(PlayEmote());
-                server.currentClient = null;
+                _monoParser.StartCoroutine(PlayEmote());
+                server.CurrentClientView = null;
                 yield break;
             } else if(_expired) {
-                _client.StartCoroutine(GoToBase());
-                _mutex.Unlock(_client);
-                server.currentClient = null;
+                _monoParser.StartCoroutine(GoToBase());
+                _mutex.Unlock(_monoParser);
+                server.CurrentClientView = null;
                 yield break;
             } else if(_tapped) {
-                _client.ExpireNow();
+                _clientController.ExpireNow();
             }
             yield return null;
         }
@@ -121,8 +126,8 @@ using UnityEngine;
         while(!_emotePlayed) {
             yield return null;
         }
-        _mutex.Unlock(_client);
-        _client.StartCoroutine(GoToBase());
+        _mutex.Unlock(_monoParser);
+        _monoParser.StartCoroutine(GoToBase());
     }
 
     IEnumerator GoToBase() {
@@ -130,14 +135,14 @@ using UnityEngine;
         _expired = false;
         _served = false;
         _destinationReached = false;
-        _clientLegs.GoTo(_client.HomePosition);
+        _clientLegs.GoTo(_clientController.HomePosition);
         while(true) {
             if(_destinationReached) {
-                _client.StartCoroutine(Idle());
+                _monoParser.StartCoroutine(Idle());
                 yield break;
             } else if(_tapped) {
                 _clientLegs.Stop();
-                _client.StartCoroutine(GoToWait());
+                _monoParser.StartCoroutine(GoToWait());
                 yield break;
             }
             yield return null;
@@ -146,13 +151,12 @@ using UnityEngine;
 
     private void GoToQueue()
     {
-        _queue.AddClientInQueue(_client); 
-        _clientLegs.GoTo(_queue.PositionMath(_client));
-        _client.StartCoroutine(GoToWait());
+        _queue.AddClientInQueue(_clientView); 
+        _clientLegs.GoTo(_queue.PositionMath(_clientView));
+        _monoParser.StartCoroutine(GoToWait());
     }
 
     public void OnTapped(){
-        Debug.Log("Нажат!");
         _tapped = true;
     }
     public void OnServed(){
@@ -167,4 +171,14 @@ using UnityEngine;
     public void OnEmotePlayed(){
         _emotePlayed = true;
     }
-}
+
+    public void GoTo(Vector3 position)
+    {
+        _clientLegs.GoTo(position);
+    }
+
+    public void Stop()
+    {
+        _clientLegs.Stop();
+    }
+    }

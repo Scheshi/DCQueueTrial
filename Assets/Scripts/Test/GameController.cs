@@ -14,7 +14,8 @@ public class GameController : MonoBehaviour
         HomeFabric homeFabric = new HomeFabric();
         for(var i = 0; i < _clientDatas.Length; i++)
         {
-            var pack = new GameObject("ClientPack" + i);
+            var pack = new GameObject("ClientPack" + i).transform;
+           pack.position = _clientDatas[i].HomeData.Position;
             var home = homeFabric.Contruct(_clientDatas[i].HomeData.Position, _clientDatas[i].Color);
             var homeTransform = home.transform;
             homeTransform.parent = pack.transform;
@@ -25,7 +26,7 @@ public class GameController : MonoBehaviour
                 FindObjectOfType<QueueController>(),
                 FindObjectOfType<Mutex>());
             home.InjectClient(client);
-            client.transform.parent = pack.transform;
+            client.transform.parent = pack;
         }
     }
 }

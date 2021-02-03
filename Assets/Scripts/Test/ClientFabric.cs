@@ -7,8 +7,8 @@ using UnityEngine.AI;
 internal class ClientFabric
     {
 
-        public Client Construct(ClientStruct dataClientStruct, Transform home, Color color,
-            QueueController controller, Mutex mutex)
+        public ClientView Construct(ClientStruct dataClientStruct, Transform home, Color color,
+            QueueController queueController, Mutex mutex)
         {
             //Пока что Null-object паттерн
             var timeSpan = new GameObject("timer")
@@ -22,7 +22,7 @@ internal class ClientFabric
                 timeFill.transform.parent = timeSpan.transform;
                 timeFill.transform.localPosition = Vector3.zero;
                 timeFill.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-                var client = Client.Create(dataClientStruct, home, timeSpan);
+                var client = new GameObject("client").AddComponent<ClientView>();
 
                 client.gameObject
                     .SetSprite(Resources.Load<Sprite>("art_1"))
@@ -41,13 +41,25 @@ internal class ClientFabric
                 
                 timeSpan.transform.parent = client.transform;
                 timeSpan.transform.localPosition = new Vector3(0.0100f, 1.29f, -0.25f);
+
+                var animator = client.GetComponent<Animator>();
+                IClientController controller = new ClientController(home, timeSpan, client, dataClientStruct);
                 
-                client.SetBrain(new ClientDirectionController(
+                IBrain brain = new ClientDirectionController(
                     mutex,
-                    controller,
+                    queueController,
                     client,
-                    client.gameObject.AddComponent<Legs>(),
-                    client.GetComponent<Animator>()));
+                    new ClientMoveController(client, navAgent, animator, dataClientStruct.Speed),
+                    animator,
+                    controller,
+                    client
+                    );
+
+                controller.SetBrain(brain);
+                
+                client.SetBrain(brain);
+                client.InjectController(controller);
+                client.transform.position = home.position;
             return client;
         }
     }

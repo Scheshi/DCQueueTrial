@@ -3,11 +3,11 @@ using UnityEngine.EventSystems;
 
 public class Server : MonoBehaviour, IPointerDownHandler
 {
-    public Client currentClient;
+    public IClientView CurrentClientView;
     public void OnPointerDown(PointerEventData pointerEventData)
     {
-        if(currentClient) {
-            currentClient.Serve();
+        if(CurrentClientView != null) {
+            CurrentClientView.Controller.Serve();
         }
     }
 }

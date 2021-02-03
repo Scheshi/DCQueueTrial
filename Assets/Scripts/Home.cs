@@ -5,26 +5,26 @@ using UnityEngine.EventSystems;
 
 public class Home : MonoBehaviour, IPointerDownHandler
 {
-    [SerializeField] private Client _client;
+    [SerializeField] private ClientView _clientView;
 
     public void Start()
     {
-        /*if(_client) {
-            GetComponent<SpriteRenderer>().color = _client.GetComponent<SpriteRenderer>().color * 0.66f;
-            _client.SetHome(transform);*/
+        /*if(_clientView) {
+            GetComponent<SpriteRenderer>().color = _clientView.GetComponent<SpriteRenderer>().color * 0.66f;
+            _clientView.SetHome(transform);*/
         //}
     }
 
     public void OnPointerDown(PointerEventData pointerEventData)
     {
-        if (_client) _client.OnPointerDown(pointerEventData);
+        if (_clientView != null) _clientView.OnPointerDown(pointerEventData);
     }
 
-    public void InjectClient(Client client)
+    public void InjectClient(IClientView clientView)
     {
-        if (!_client)
+        if (_clientView == null)
         {
-            _client = client;
+            _clientView = clientView as ClientView;
         }
     }
 }
