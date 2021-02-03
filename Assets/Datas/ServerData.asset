@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6ead88b86b87eb419c4277e1c2d620b, type: 3}
   m_Name: ServerData
   m_EditorClassIdentifier: 
-  Position: {x: -1.93, y: 1.45, z: 2.028}
+  Position: {x: -2.57, y: 1.45, z: 2.028}
   Color: {r: 0.7921569, g: 0.5411765, b: 0.4, a: 1}
