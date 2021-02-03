@@ -9,5 +9,5 @@ using UnityEngine;
         void ExpireNow();
         void OrderStuff();
 
-        void SetBrain(IBrain brain);
+        void InjectBrain(IBrain brain);
     }

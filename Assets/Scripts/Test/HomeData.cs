@@ -7,4 +7,5 @@ namespace Assets.Scripts.Test
     {
         public Vector3 Position;
     }
+    
 }

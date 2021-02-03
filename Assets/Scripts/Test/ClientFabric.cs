@@ -7,7 +7,7 @@ using UnityEngine.AI;
 internal class ClientFabric
     {
 
-        public ClientView Construct(ClientStruct dataClientStruct, Transform home, Color color,
+        public ClientViewProxy Construct(ClientStruct dataClientStruct, Transform home, Color color,
             QueueController queueController, Mutex mutex)
         {
             //Пока что Null-object паттерн
@@ -22,7 +22,7 @@ internal class ClientFabric
                 timeFill.transform.parent = timeSpan.transform;
                 timeFill.transform.localPosition = Vector3.zero;
                 timeFill.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-                var client = new GameObject("client").AddComponent<ClientView>();
+                ClientViewProxy client = new GameObject("client").AddComponent<ClientView>();
 
                 client.gameObject
                     .SetSprite(Resources.Load<Sprite>("art_1"))
@@ -51,13 +51,12 @@ internal class ClientFabric
                     client,
                     new ClientMoveController(client, navAgent, animator, dataClientStruct.Speed),
                     animator,
-                    controller,
-                    client
-                    );
+                    controller
+                );
 
-                controller.SetBrain(brain);
+                controller.InjectBrain(brain);
                 
-                client.SetBrain(brain);
+                client.InjectBrain(brain);
                 client.InjectController(controller);
                 client.transform.position = home.position;
             return client;

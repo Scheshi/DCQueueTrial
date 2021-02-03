@@ -7,5 +7,8 @@ using UnityEngine.EventSystems;
         IBrain Brain { get; }
         IClientController Controller { get; }
         
-        void SetBrain(IBrain brain); 
+        void InjectBrain(IBrain brain); 
+        
+        void InjectController(IClientController controller);
+        
     }

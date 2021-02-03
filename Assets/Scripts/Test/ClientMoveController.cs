@@ -8,19 +8,12 @@ public class ClientMoveController : ILegs
     private NavMeshAgent _agent;
     private Animator _animator;
     private Coroutine _walk = null;
-    private IClientView _clientView;
-    private MonoBehaviour _monoParser;
+    private ClientViewProxy _clientView;
     private float _speed;
 
-    public ClientMoveController(IClientView clientView, NavMeshAgent agent, Animator animator, float speed)
+    public ClientMoveController(ClientViewProxy clientView, NavMeshAgent agent, Animator animator, float speed)
     {
-        if (clientView is MonoBehaviour)
-        {
-            _clientView = clientView;
-            _monoParser = _clientView as MonoBehaviour;
-        }
-        else throw new ArgumentException("IClientView должен быть абстракцией MonoBehaviour");
-
+        _clientView = clientView;
         _speed = speed;
         _animator = animator;
         _agent = agent;
@@ -31,7 +24,7 @@ public class ClientMoveController : ILegs
         _agent.destination = position;
         _agent.updateRotation = false;
         _agent.speed = _speed;
-        _walk = _monoParser.StartCoroutine(WalkRoutine());
+        _walk = _clientView.StartCoroutine(WalkRoutine());
     }
 
     private IEnumerator WalkRoutine()
@@ -49,7 +42,7 @@ public class ClientMoveController : ILegs
     public void Stop()
     {
         _animator.SetFloat("Speed", 0f);
-        if(_walk != null) _monoParser.StopCoroutine(_walk);
+        if(_walk != null) _clientView.StopCoroutine(_walk);
         _walk = null;
     }
 }

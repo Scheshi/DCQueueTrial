@@ -31,7 +31,7 @@ using UnityEngine;
             _activeOrder = _monoParser.StartCoroutine(WaitForOrder());
         }
 
-        public void SetBrain(IBrain brain)
+        public void InjectBrain(IBrain brain)
         {
             if (_brain == null)
             {

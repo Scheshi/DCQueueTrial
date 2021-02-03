@@ -1,5 +1,6 @@
 namespace Assets.Scripts.Test
 {
+    //Null-object паттерн, на всякий случай, я его юзал для тестов
     public class VoidBrain : IBrain
     {
         public void OnTapped()

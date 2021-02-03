@@ -11,27 +11,25 @@ using UnityEngine;
         private Mutex _mutex;
         private QueueController _queue;
         private IClientController _clientController;
-        private IClientView _clientView;
+        private ClientViewProxy _clientView;
         private ILegs _clientLegs;
         private Animator _animator;
-        private MonoBehaviour _monoParser;
-        
+
         private bool _tapped;
         private bool _served;
         private bool _expired;
         private bool _destinationReached;
         private bool _emotePlayed;
-        public ClientDirectionController(Mutex mutex, QueueController queue, IClientView clientView,
-            ILegs legs, Animator animator, IClientController controller, MonoBehaviour monoBehaviour)
+        public ClientDirectionController(Mutex mutex, QueueController queue, ClientViewProxy clientView,
+            ILegs legs, Animator animator, IClientController controller)
         {
             _mutex = mutex;
             _queue = queue;
             _clientController = controller;
             _clientView = clientView;
-            _monoParser = monoBehaviour;
             _clientLegs = legs;
             _animator = animator;
-            _monoParser.StartCoroutine(Idle());
+            clientView.StartCoroutine(Idle());
         }
         
 
@@ -58,15 +56,15 @@ using UnityEngine;
         _destinationReached = false;
         while (true)
         {
-            IEnumerator mutexLock = _mutex.Lock(_monoParser);
+            IEnumerator mutexLock = _mutex.Lock(_clientView);
             if (_queue.IndexOfClient(_clientView) == 0 && !mutexLock.MoveNext())
             {
                 _queue.RemoveClientInQueue(_clientView);
-                _monoParser.StartCoroutine(GoToServer());
+                _clientView.StartCoroutine(GoToServer());
                 yield break;
             } else if(_tapped) {
                 _queue.RemoveClientInQueue(_clientView);
-                _monoParser.StartCoroutine(GoToBase());
+                _clientView.StartCoroutine(GoToBase());
                 yield break;
             }
             yield return null;
@@ -84,11 +82,11 @@ using UnityEngine;
         while(true) {
             if(_destinationReached) {
                 
-                _monoParser.StartCoroutine(WaitForServed());
+                _clientView.StartCoroutine(WaitForServed());
                 yield break;
             } else if(_tapped) {
-                _monoParser.StartCoroutine(GoToBase());
-                _mutex.Unlock(_monoParser);
+                _clientView.StartCoroutine(GoToBase());
+                _mutex.Unlock(_clientView);
                 yield break;
             }
             yield return null;
@@ -105,12 +103,12 @@ using UnityEngine;
         server.CurrentClientView = _clientView;
         while(true) {
             if(_served) {
-                _monoParser.StartCoroutine(PlayEmote());
+                _clientView.StartCoroutine(PlayEmote());
                 server.CurrentClientView = null;
                 yield break;
             } else if(_expired) {
-                _monoParser.StartCoroutine(GoToBase());
-                _mutex.Unlock(_monoParser);
+                _clientView.StartCoroutine(GoToBase());
+                _mutex.Unlock(_clientView);
                 server.CurrentClientView = null;
                 yield break;
             } else if(_tapped) {
@@ -126,8 +124,8 @@ using UnityEngine;
         while(!_emotePlayed) {
             yield return null;
         }
-        _mutex.Unlock(_monoParser);
-        _monoParser.StartCoroutine(GoToBase());
+        _mutex.Unlock(_clientView);
+        _clientView.StartCoroutine(GoToBase());
     }
 
     IEnumerator GoToBase() {
@@ -138,11 +136,11 @@ using UnityEngine;
         _clientLegs.GoTo(_clientController.HomePosition);
         while(true) {
             if(_destinationReached) {
-                _monoParser.StartCoroutine(Idle());
+                _clientView.StartCoroutine(Idle());
                 yield break;
             } else if(_tapped) {
                 _clientLegs.Stop();
-                _monoParser.StartCoroutine(GoToWait());
+                _clientView.StartCoroutine(GoToWait());
                 yield break;
             }
             yield return null;
@@ -153,7 +151,7 @@ using UnityEngine;
     {
         _queue.AddClientInQueue(_clientView); 
         _clientLegs.GoTo(_queue.PositionMath(_clientView));
-        _monoParser.StartCoroutine(GoToWait());
+        _clientView.StartCoroutine(GoToWait());
     }
 
     public void OnTapped(){

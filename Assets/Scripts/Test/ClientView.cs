@@ -3,27 +3,27 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class ClientView : MonoBehaviour, IClientView
+public class ClientView : ClientViewProxy
     {
         private IClientController _controller;
         private IBrain _brain;
 
-        public void InjectController(IClientController controller)
+        public override void InjectController(IClientController controller)
         {
             _controller = controller;
         }
         
-        public void OnPointerDown(PointerEventData eventData)
+        public override void OnPointerDown(PointerEventData eventData)
         {
             _brain.OnTapped();
         }
 
         
         
-        public IBrain Brain => _brain;
-        public IClientController Controller => _controller;
+        public override IBrain Brain => _brain;
+        public override IClientController Controller => _controller;
 
-        public void SetBrain(IBrain brain)
+        public override void InjectBrain(IBrain brain)
         {
             _brain = brain;
         }

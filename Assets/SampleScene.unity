@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &115485386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d435b7a1c2171b843b03c5437ed4bf47, type: 2}
   - {fileID: 11400000, guid: 30ac0492d183aec4b893e1dd15fb945f, type: 2}
   - {fileID: 11400000, guid: 4bdd88ffa73249f448dde8f175b62855, type: 2}
+  _server: {fileID: 11400000, guid: 85a64599cc1566b48829704248dd1bea, type: 2}
 --- !u!4 &117018692
 Transform:
   m_ObjectHideFlags: 0
@@ -2798,7 +2799,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh15730
+  m_Name: pb_Mesh14136
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3065,7 +3066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &859373610
 MonoBehaviour:
   m_ObjectHideFlags: 0

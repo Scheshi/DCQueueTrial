@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class Mutex : MonoBehaviour
 {
-    Object owner = null;
+    private Object owner = null;
     public IEnumerator Lock(Object owner)
     {
         while(this.owner != null) yield return null;
