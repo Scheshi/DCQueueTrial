@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Test;
+using UnityEngine;
 
 
 public class GameController : MonoBehaviour
@@ -15,16 +16,21 @@ public class GameController : MonoBehaviour
         ServerFactory serverFactory = new ServerFactory();
         
         Mutex mutex = serverFactory.Construct(_server.Position, _server.Color);
+        Transform[] queuePoints = new Transform[_clientDatas.Length];
 
-        var markers = FindObjectsOfType<QueueMarker>();
-        Transform[] queuePoints = new Transform[markers.Length];
-        
+        Vector3 mutexPosition = mutex.transform.position;
+
+        float distanceFromPoints = Resources.Load<Sprite>("art_1").bounds.size.x;
         for (int i = 0; i < queuePoints.Length; i++)
         {
-            queuePoints[i] = markers[i].transform;
+            queuePoints[i] = new GameObject("queue" + i)
+                .AddOrGetComponent<QueueMarker>()
+                .transform;
+            queuePoints[i].position = new Vector3(mutexPosition.x + distanceFromPoints * (i + 1), mutexPosition.y,
+                mutexPosition.z);
         }
         
-        QueueController queue = new QueueController(mutex.transform.position, queuePoints);
+        QueueController queue = new QueueController(mutexPosition, queuePoints);
         for(var i = 0; i < _clientDatas.Length; i++)
         {
             var pack = new GameObject("ClientPack" + i).transform;
@@ -45,14 +51,17 @@ public class GameController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        foreach (var item in _clientDatas)
-        {
-            Gizmos.color = item.Color;
-            Gizmos.DrawSphere(item.HomeData.Position, 0.5f);
-        }
-
         Gizmos.color = _server.Color;
         Gizmos.DrawCube(_server.Position, new Vector3(0.7f, 0.7f, 0.7f));
+        float distance = Resources.Load<Sprite>("art_1").bounds.size.x;
+        var exampleMutexPosition = _server.Position + Vector3.back;
+        for (int i = 0; i < _clientDatas.Length; i++)
+        {
+            Gizmos.color = _clientDatas[i].Color;
+            Gizmos.DrawSphere(_clientDatas[i].HomeData.Position, 0.5f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(new Vector3(exampleMutexPosition.x + distance * (i + 1), exampleMutexPosition.y, exampleMutexPosition.z), 0.1f);
+        }
     }
 }
 

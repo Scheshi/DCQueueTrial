@@ -9,6 +9,7 @@ public class QueueController
 
     public QueueController(Vector3 mutexPosition, Transform[] queuePoints)
     {
+        
         _queuePoints = queuePoints;
         Start(mutexPosition);
     }
