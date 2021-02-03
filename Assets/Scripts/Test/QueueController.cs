@@ -2,27 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QueueController : MonoBehaviour
+public class QueueController
 {
     private readonly List<IClientView> _clientQueue = new List<IClientView>();
-    private Transform[] _queuePosition;
+    private Transform[] _queuePoints;
 
-    private void Start()
+    public QueueController(Vector3 mutexPosition, Transform[] queuePoints)
     {
-        //_mutex = FindObjectOfType<Mutex>();
-        var markers = transform.GetComponentsInChildren<QueueMarker>();
-        _queuePosition = new Transform[markers.Length];
-        for (var i = 0; i < markers.Length; i++)
-        {
-            _queuePosition[i] = markers[i].transform;
-        }
-        
-        var serverPosition = FindObjectOfType<Server>().transform.position;
-
-        var pc = new PositionComparer(serverPosition);
-
-        Array.Sort(_queuePosition, pc);
-        
+        _queuePoints = queuePoints;
+        Start(mutexPosition);
+    }
+    
+    private void Start(Vector3 mutexPosition)
+    {
+        var pc = new PositionComparer(mutexPosition);
+        Array.Sort(_queuePoints, pc);
     }
 
     public void AddClientInQueue(IClientView clientView)
@@ -50,7 +44,7 @@ public class QueueController : MonoBehaviour
         if (_clientQueue.Contains(clientView))
         {
             var optionClient = _clientQueue.IndexOf(clientView);
-            return _queuePosition[optionClient].position;
+            return _queuePoints[optionClient].position;
         }
         else throw new NullReferenceException("Клиента нет в очереди");
     }

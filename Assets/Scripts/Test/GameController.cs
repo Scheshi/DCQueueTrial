@@ -14,6 +14,17 @@ public class GameController : MonoBehaviour
         HomeFabric homeFabric = new HomeFabric();
         ServerFactory serverFactory = new ServerFactory();
         
+        Mutex mutex = serverFactory.Construct(_server.Position, _server.Color);
+
+        var markers = FindObjectsOfType<QueueMarker>();
+        Transform[] queuePoints = new Transform[markers.Length];
+        
+        for (int i = 0; i < queuePoints.Length; i++)
+        {
+            queuePoints[i] = markers[i].transform;
+        }
+        
+        QueueController queue = new QueueController(mutex.transform.position, queuePoints);
         for(var i = 0; i < _clientDatas.Length; i++)
         {
             var pack = new GameObject("ClientPack" + i).transform;
@@ -25,8 +36,8 @@ public class GameController : MonoBehaviour
                 _clientDatas[i].ClientStruct,
                 homeTransform,
                 _clientDatas[i].Color,
-                FindObjectOfType<QueueController>(),
-                FindObjectOfType<Mutex>());
+                queue,
+                mutex);
             home.InjectClient(client);
             client.transform.parent = pack;
         }
