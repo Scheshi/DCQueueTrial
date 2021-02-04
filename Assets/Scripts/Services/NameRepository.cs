@@ -11,4 +11,5 @@ public static class NameRepository
     public static string ClientPackName = "ClientPack";
     public static string QueuePointName = "queue";
     public static string Client = "Client";
+    public static string NotExists = " not exists";
 }

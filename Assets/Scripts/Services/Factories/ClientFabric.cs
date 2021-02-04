@@ -22,7 +22,7 @@ internal class ClientFabric
 
             if (!sprite2)
             {
-                throw new NullReferenceException(NameRepository.Art2 + "not exists");
+                throw new NullReferenceException(NameRepository.Art2 + NameRepository.NotExists);
             }
 
             timeFill.sprite = sprite2;
@@ -36,14 +36,14 @@ internal class ClientFabric
 
             if (!sprite)
             {
-                throw new NullReferenceException(NameRepository.Art1 + "not exists");
+                throw new NullReferenceException(NameRepository.Art1 + NameRepository.NotExists);
             }
 
             var animatorController = Resources.Load<AnimatorController>(NameRepository.Client);
 
             if (!animatorController)
             {
-                throw new NullReferenceException(NameRepository.Client + "not exists");
+                throw new NullReferenceException(NameRepository.Client + NameRepository.NotExists);
             }
 
         client.gameObject

@@ -12,7 +12,7 @@ using UnityEngine;
             var sprite = Resources.Load<Sprite>(NameRepository.Art1);
             if (!sprite)
             {
-                throw new NullReferenceException(NameRepository.Art1 + "not exists");
+                throw new NullReferenceException(NameRepository.Art1 + NameRepository.NotExists);
             }
             
             Server server = new GameObject("Server")

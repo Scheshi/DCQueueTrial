@@ -11,7 +11,7 @@ internal class HomeFabric
         var sprite = Resources.Load<Sprite>(NameRepository.Art1);
         if (!sprite)
         {
-            throw new NullReferenceException(NameRepository.Art1 + "not exists");
+            throw new NullReferenceException(NameRepository.Art1 + NameRepository.NotExists);
         }
 
         var home = new GameObject("home")
