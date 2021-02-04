@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Assets.Scripts.Test
 {
     //Null-object паттерн, на всякий случай, я его юзал для тестов
@@ -23,6 +25,16 @@ namespace Assets.Scripts.Test
         }
 
         public void OnEmotePlayed()
+        {
+            return;
+        }
+
+        public void GoTo(Vector3 position)
+        {
+            return;
+        }
+
+        public void Stop()
         {
             return;
         }

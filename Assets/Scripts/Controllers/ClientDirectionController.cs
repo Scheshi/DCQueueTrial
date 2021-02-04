@@ -7,7 +7,6 @@ using UnityEngine;
     {
         //Потому что строки - раковая опухоль шарпов
         private const string HAPPY_EMOTY = "Happy";
-        
         private Mutex _mutex;
         private QueueController _queue;
         private IClientController _clientController;
@@ -30,10 +29,10 @@ using UnityEngine;
             _clientLegs = legs;
             _animator = animator;
             clientView.StartCoroutine(Idle());
-        }
+        } 
         
-
-        IEnumerator Idle()
+        
+    private IEnumerator Idle()
     { 
         _tapped = false;
         _served = false;
@@ -48,7 +47,7 @@ using UnityEngine;
 
     }
 
-    IEnumerator GoToWait()
+    private IEnumerator GoToWait()
     {
         _tapped = false;
         _expired = false;
@@ -93,7 +92,7 @@ using UnityEngine;
         }
     }
     
-    IEnumerator WaitForServed() {
+    private IEnumerator WaitForServed() {
         _tapped = false;
         _expired = false;
         _served = false;
@@ -118,7 +117,7 @@ using UnityEngine;
         }
     }
 
-    IEnumerator PlayEmote() {
+    private IEnumerator PlayEmote() {
         _emotePlayed = false;
         _animator.SetTrigger(HAPPY_EMOTY);
         while(!_emotePlayed) {
@@ -128,7 +127,7 @@ using UnityEngine;
         _clientView.StartCoroutine(GoToBase());
     }
 
-    IEnumerator GoToBase() {
+    private IEnumerator GoToBase() {
         _tapped = false;
         _expired = false;
         _served = false;

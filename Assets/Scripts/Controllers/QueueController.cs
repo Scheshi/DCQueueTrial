@@ -30,8 +30,7 @@ public class QueueController
         _clientQueue.Remove(clientView);
         foreach (var item in _clientQueue)
         {
-            if(item.Brain is ILegs)
-                (item.Brain as ILegs).GoTo(PositionMath(item));
+            item.Brain.GoTo(PositionMath(item));
         }
     }
 

@@ -1,4 +1,4 @@
-﻿public interface IBrain
+﻿public interface IBrain : ILegs
 {
     void OnTapped();
     void OnServed();
