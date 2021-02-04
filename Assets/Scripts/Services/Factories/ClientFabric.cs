@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Test;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -13,21 +14,42 @@ internal class ClientFabric
             //Пока что Null-object паттерн
             var timeSpan = new GameObject("timer")
                 .AddOrGetComponent<SpriteMask>();
-            
-                timeSpan.sprite = Resources.Load<Sprite>("time_gradient");
-                var timeFill = new GameObject("fill")
-                    .AddOrGetComponent<SpriteRenderer>();
-                timeFill.sprite = Resources.Load<Sprite>(NameRepository.Art2);
 
-                timeFill.transform.parent = timeSpan.transform;
-                timeFill.transform.localPosition = Vector3.zero;
-                timeFill.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-                ClientViewProxy client = new GameObject(NameRepository.Client).AddComponent<Client>();
+            timeSpan.sprite = Resources.Load<Sprite>("time_gradient");
+            var timeFill = new GameObject("fill")
+                .AddOrGetComponent<SpriteRenderer>();
+            var sprite2 = Resources.Load<Sprite>(NameRepository.Art2);
 
-                client.gameObject
-                    .SetSprite(Resources.Load<Sprite>(NameRepository.Art1))
+            if (!sprite2)
+            {
+                throw new NullReferenceException(NameRepository.Art2 + "not exists");
+            }
+
+            timeFill.sprite = sprite2;
+
+            timeFill.transform.parent = timeSpan.transform;
+            timeFill.transform.localPosition = Vector3.zero;
+            timeFill.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+            ClientViewProxy client = new GameObject(NameRepository.Client).AddComponent<Client>();
+
+            var sprite = Resources.Load<Sprite>(NameRepository.Art1);
+
+            if (!sprite)
+            {
+                throw new NullReferenceException(NameRepository.Art1 + "not exists");
+            }
+
+            var animatorController = Resources.Load<AnimatorController>(NameRepository.Client);
+
+            if (!animatorController)
+            {
+                throw new NullReferenceException(NameRepository.Client + "not exists");
+            }
+
+        client.gameObject
+                    .SetSprite(sprite)
                     .ChangeColor(color)
-                    .SetAnimatorController(Resources.Load<AnimatorController>(NameRepository.Client))
+                    .SetAnimatorController(animatorController)
                     .SetBoxCollider2D(new Vector2(0.0f, 0.9f), new Vector2(0.9f, 1.8f));
                 
                 

@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Test;
 using UnityEngine;
 
@@ -7,9 +8,15 @@ internal class HomeFabric
     { 
         //Вроде так было захардкодино в оригинале.
         clientColor.a *= 0.66f;
-       var home = new GameObject("home")
+        var sprite = Resources.Load<Sprite>(NameRepository.Art1);
+        if (!sprite)
+        {
+            throw new NullReferenceException(NameRepository.Art1 + "not exists");
+        }
+
+        var home = new GameObject("home")
            //Свои методы расширения сюда притащил, извините.
-           .SetSprite(Resources.Load<Sprite>("art_1"))
+           .SetSprite(sprite)
            .ChangeColor(clientColor)
            .SetScale(new Vector3(2.5f, 1.5f, 1.0f))
            .AddComponent<Home>();

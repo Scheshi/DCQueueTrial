@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Test;
+﻿using System;
+using Assets.Scripts.Test;
 using UnityEngine;
 
 
@@ -19,8 +20,14 @@ public class GameInitializator : MonoBehaviour
         Transform[] queuePoints = new Transform[_clientDatas.Length];
 
         Vector3 mutexPosition = mutex.transform.position;
-
-        float distanceFromPoints = Resources.Load<Sprite>(NameRepository.Art1).bounds.size.x;
+        var sprite = Resources.Load<Sprite>(NameRepository.Art1);
+        
+        if (!sprite)
+        {
+            throw new NullReferenceException(NameRepository.Art1 + "not exists");
+        }
+        
+        float distanceFromPoints = sprite.bounds.size.x;
         Transform queuePointsPack = new GameObject(NameRepository.QueuePointName).transform;
         for (int i = 0; i < queuePoints.Length; i++)
         {
@@ -55,7 +62,14 @@ public class GameInitializator : MonoBehaviour
     {
         Gizmos.color = _server.Color;
         Gizmos.DrawCube(_server.Position, new Vector3(0.7f, 0.7f, 0.7f));
-        float distance = Resources.Load<Sprite>(NameRepository.Art1).bounds.size.x;
+        var sprite = Resources.Load<Sprite>(NameRepository.Art1);
+        
+        if (!sprite)
+        {
+            throw new NullReferenceException(NameRepository.Art1 + "not exists");
+        }
+        
+        float distance = sprite.bounds.size.x;
         var exampleMutexPosition = _server.Position + Vector3.back;
         for (int i = 0; i < _clientDatas.Length; i++)
         {
