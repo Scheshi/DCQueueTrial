@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class GameController : MonoBehaviour
+public class GameInitializator : MonoBehaviour
 {
     [SerializeField] private ClientData[] _clientDatas;
     [SerializeField] private ServerData _server;
