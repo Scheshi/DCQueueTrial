@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class ClientView : ClientViewProxy
+public class Client : ClientViewProxy
     {
         private IClientController _controller;
         private IBrain _brain;

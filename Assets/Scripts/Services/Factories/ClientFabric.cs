@@ -22,7 +22,7 @@ internal class ClientFabric
                 timeFill.transform.parent = timeSpan.transform;
                 timeFill.transform.localPosition = Vector3.zero;
                 timeFill.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-                ClientViewProxy client = new GameObject(NameRepository.Client).AddComponent<ClientView>();
+                ClientViewProxy client = new GameObject(NameRepository.Client).AddComponent<Client>();
 
                 client.gameObject
                     .SetSprite(Resources.Load<Sprite>(NameRepository.Art1))

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Home : MonoBehaviour, IPointerDownHandler
 {
-    [SerializeField] private ClientView _clientView;
+    private IClientView _clientView;
 
     public void Start()
     {
@@ -24,7 +24,7 @@ public class Home : MonoBehaviour, IPointerDownHandler
     {
         if (_clientView == null)
         {
-            _clientView = clientView as ClientView;
+            _clientView = clientView;
         }
     }
 }

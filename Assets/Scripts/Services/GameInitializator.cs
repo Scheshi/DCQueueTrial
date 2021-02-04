@@ -21,6 +21,7 @@ public class GameInitializator : MonoBehaviour
         Vector3 mutexPosition = mutex.transform.position;
 
         float distanceFromPoints = Resources.Load<Sprite>(NameRepository.Art1).bounds.size.x;
+        Transform queuePointsPack = new GameObject(NameRepository.QueuePointName).transform;
         for (int i = 0; i < queuePoints.Length; i++)
         {
             queuePoints[i] = new GameObject(NameRepository.QueuePointName + i)
@@ -28,6 +29,7 @@ public class GameInitializator : MonoBehaviour
                 .transform;
             queuePoints[i].position = new Vector3(mutexPosition.x + distanceFromPoints * (i + 1), mutexPosition.y,
                 mutexPosition.z);
+            queuePoints[i].parent = queuePointsPack;
         }
         
         QueueController queue = new QueueController(mutexPosition, queuePoints);
