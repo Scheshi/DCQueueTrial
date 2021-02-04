@@ -17,17 +17,17 @@ internal class ClientFabric
                 timeSpan.sprite = Resources.Load<Sprite>("time_gradient");
                 var timeFill = new GameObject("fill")
                     .AddOrGetComponent<SpriteRenderer>();
-                timeFill.sprite = Resources.Load<Sprite>("art_2");
+                timeFill.sprite = Resources.Load<Sprite>(NameRepository.Art2);
 
                 timeFill.transform.parent = timeSpan.transform;
                 timeFill.transform.localPosition = Vector3.zero;
                 timeFill.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-                ClientViewProxy client = new GameObject("client").AddComponent<ClientView>();
+                ClientViewProxy client = new GameObject(NameRepository.Client).AddComponent<ClientView>();
 
                 client.gameObject
-                    .SetSprite(Resources.Load<Sprite>("art_1"))
+                    .SetSprite(Resources.Load<Sprite>(NameRepository.Art1))
                     .ChangeColor(color)
-                    .SetAnimatorController(Resources.Load<AnimatorController>("Client"))
+                    .SetAnimatorController(Resources.Load<AnimatorController>(NameRepository.Client))
                     .SetBoxCollider2D(new Vector2(0.0f, 0.9f), new Vector2(0.9f, 1.8f));
                 
                 

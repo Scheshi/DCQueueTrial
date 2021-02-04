@@ -20,10 +20,10 @@ public class GameController : MonoBehaviour
 
         Vector3 mutexPosition = mutex.transform.position;
 
-        float distanceFromPoints = Resources.Load<Sprite>("art_1").bounds.size.x;
+        float distanceFromPoints = Resources.Load<Sprite>(NameRepository.Art1).bounds.size.x;
         for (int i = 0; i < queuePoints.Length; i++)
         {
-            queuePoints[i] = new GameObject("queue" + i)
+            queuePoints[i] = new GameObject(NameRepository.QueuePointName + i)
                 .AddOrGetComponent<QueueMarker>()
                 .transform;
             queuePoints[i].position = new Vector3(mutexPosition.x + distanceFromPoints * (i + 1), mutexPosition.y,
@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
         QueueController queue = new QueueController(mutexPosition, queuePoints);
         for(var i = 0; i < _clientDatas.Length; i++)
         {
-            var pack = new GameObject("ClientPack" + i).transform;
+            var pack = new GameObject(NameRepository.ClientPackName + i).transform;
            pack.position = _clientDatas[i].HomeData.Position;
             var home = homeFabric.Contruct(_clientDatas[i].HomeData.Position, _clientDatas[i].Color);
             var homeTransform = home.transform;
@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
     {
         Gizmos.color = _server.Color;
         Gizmos.DrawCube(_server.Position, new Vector3(0.7f, 0.7f, 0.7f));
-        float distance = Resources.Load<Sprite>("art_1").bounds.size.x;
+        float distance = Resources.Load<Sprite>(NameRepository.Art1).bounds.size.x;
         var exampleMutexPosition = _server.Position + Vector3.back;
         for (int i = 0; i < _clientDatas.Length; i++)
         {

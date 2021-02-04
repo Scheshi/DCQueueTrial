@@ -20,27 +20,16 @@ namespace Assets.Scripts.Test
             }
             else return gameObject.AddComponent<T>();
         }
-        
-        public static SpriteRenderer AddOrGetSpriteRenderer(this GameObject gameObject)
-        {
-            SpriteRenderer renderer = null;
-            if 
-                (gameObject.TryGetComponent(out renderer)) ;
-            else
-                renderer = gameObject
-                    .AddComponent<SpriteRenderer>();
-            return renderer;
-        }
 
         public static GameObject SetSprite(this GameObject gameObject, Sprite sprite)
         {
-            gameObject.AddOrGetSpriteRenderer().sprite = sprite;
+            gameObject.AddOrGetComponent<SpriteRenderer>().sprite = sprite;
             return gameObject;
         }
 
         public static GameObject ChangeColor(this GameObject gameObject, Color color)
         {
-            gameObject.AddOrGetSpriteRenderer().color = color;
+            gameObject.AddOrGetComponent<SpriteRenderer>().color = color;
             return gameObject;
         }
 
